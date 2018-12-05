@@ -1,0 +1,175 @@
+{
+  "contractName": "ERC165",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "interfaceID",
+          "type": "bytes4"
+        }
+      ],
+      "name": "supportsInterface",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "/*\r\n\r\n  Copyright 2017 Dharma Labs Inc.\r\n\r\n  Licensed under the Apache License, Version 2.0 (the \"License\");\r\n  you may not use this file except in compliance with the License.\r\n  You may obtain a copy of the License at\r\n\r\n    http://www.apache.org/licenses/LICENSE-2.0\r\n\r\n  Unless required by applicable law or agreed to in writing, software\r\n  distributed under the License is distributed on an \"AS IS\" BASIS,\r\n  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\r\n  See the License for the specific language governing permissions and\r\n  limitations under the License.\r\n\r\n*/\r\n\r\npragma solidity 0.4.18;\r\n\r\n\r\n/**\r\n * ERC165 interface required by ERC721 non-fungible token.\r\n *\r\n * https://github.com/ethereum/EIPs/blob/master/EIPS/eip-721.md\r\n * https://github.com/ethereum/EIPs/blob/master/EIPS/eip-165.md\r\n */\r\ninterface ERC165 {\r\n    /// @notice Query if a contract implements an interface\r\n    /// @param interfaceID The interface identifier, as specified in ERC-165\r\n    /// @dev Interface identification is specified in ERC-165. This function\r\n    ///  uses less than 30,000 gas.\r\n    /// @return `true` if the contract implements `interfaceID` and\r\n    ///  `interfaceID` is not 0xffffffff, `false` otherwise\r\n    function supportsInterface(bytes4 interfaceID) external view returns (bool);\r\n}\r\n",
+  "sourcePath": "/mnt/c/Users/devan/fixer/check-dharma/contracts/ERC165.sol",
+  "ast": {
+    "attributes": {
+      "absolutePath": "/mnt/c/Users/devan/fixer/check-dharma/contracts/ERC165.sol",
+      "exportedSymbols": {
+        "ERC165": [
+          4700
+        ]
+      }
+    },
+    "children": [
+      {
+        "attributes": {
+          "literals": [
+            "solidity",
+            "0.4",
+            ".18"
+          ]
+        },
+        "id": 4692,
+        "name": "PragmaDirective",
+        "src": "602:23:10"
+      },
+      {
+        "attributes": {
+          "baseContracts": [
+            null
+          ],
+          "contractDependencies": [
+            null
+          ],
+          "contractKind": "interface",
+          "documentation": "ERC165 interface required by ERC721 non-fungible token.\r\n\n * https://github.com/ethereum/EIPs/blob/master/EIPS/eip-721.md\r\nhttps://github.com/ethereum/EIPs/blob/master/EIPS/eip-165.md\r",
+          "fullyImplemented": false,
+          "linearizedBaseContracts": [
+            4700
+          ],
+          "name": "ERC165",
+          "scope": 4701
+        },
+        "children": [
+          {
+            "attributes": {
+              "body": null,
+              "constant": true,
+              "implemented": false,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "supportsInterface",
+              "payable": false,
+              "scope": 4700,
+              "stateMutability": "view",
+              "superFunction": null,
+              "visibility": "external"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "interfaceID",
+                      "scope": 4699,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "bytes4",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "bytes4",
+                          "type": "bytes4"
+                        },
+                        "id": 4693,
+                        "name": "ElementaryTypeName",
+                        "src": "1270:6:10"
+                      }
+                    ],
+                    "id": 4694,
+                    "name": "VariableDeclaration",
+                    "src": "1270:18:10"
+                  }
+                ],
+                "id": 4695,
+                "name": "ParameterList",
+                "src": "1269:20:10"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "",
+                      "scope": 4699,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "bool",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "bool",
+                          "type": "bool"
+                        },
+                        "id": 4696,
+                        "name": "ElementaryTypeName",
+                        "src": "1313:4:10"
+                      }
+                    ],
+                    "id": 4697,
+                    "name": "VariableDeclaration",
+                    "src": "1313:4:10"
+                  }
+                ],
+                "id": 4698,
+                "name": "ParameterList",
+                "src": "1312:6:10"
+              }
+            ],
+            "id": 4699,
+            "name": "FunctionDefinition",
+            "src": "1243:76:10"
+          }
+        ],
+        "id": 4700,
+        "name": "ContractDefinition",
+        "src": "835:487:10"
+      }
+    ],
+    "id": 4701,
+    "name": "SourceUnit",
+    "src": "602:722:10"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.18+commit.9cf6e910.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "1.0.1",
+  "updatedAt": "2018-11-27T07:44:24.912Z"
+}

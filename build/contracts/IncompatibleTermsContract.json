@@ -1,0 +1,990 @@
+{
+  "contractName": "IncompatibleTermsContract",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "agreementId",
+          "type": "bytes32"
+        }
+      ],
+      "name": "getValueRepaidToDate",
+      "outputs": [
+        {
+          "name": "_valueRepaid",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_agreementId",
+          "type": "bytes32"
+        }
+      ],
+      "name": "getTermEndTimestamp",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "agreementId",
+          "type": "bytes32"
+        },
+        {
+          "name": "payer",
+          "type": "address"
+        },
+        {
+          "name": "beneficiary",
+          "type": "address"
+        },
+        {
+          "name": "unitsOfRepayment",
+          "type": "uint256"
+        },
+        {
+          "name": "tokenAddress",
+          "type": "address"
+        }
+      ],
+      "name": "registerRepayment",
+      "outputs": [
+        {
+          "name": "_success",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "agreementId",
+          "type": "bytes32"
+        },
+        {
+          "name": "debtor",
+          "type": "address"
+        }
+      ],
+      "name": "registerTermStart",
+      "outputs": [
+        {
+          "name": "_success",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "agreementId",
+          "type": "bytes32"
+        },
+        {
+          "name": "timestamp",
+          "type": "uint256"
+        }
+      ],
+      "name": "getExpectedRepaymentValue",
+      "outputs": [
+        {
+          "name": "_expectedRepaymentValue",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x6060604052341561000f57600080fd5b6102938061001e6000396000f30060606040526004361061006d576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806303a896a1146100725780632762dd8c146100ad5780635f0280ba146100e8578063977a5e641461018d57806399114d84146101eb575b600080fd5b341561007d57600080fd5b61009760048080356000191690602001909190505061022f565b6040518082815260200191505060405180910390f35b34156100b857600080fd5b6100d2600480803560001916906020019091905050610239565b6040518082815260200191505060405180910390f35b34156100f357600080fd5b61017360048080356000191690602001909190803573ffffffffffffffffffffffffffffffffffffffff1690602001909190803573ffffffffffffffffffffffffffffffffffffffff1690602001909190803590602001909190803573ffffffffffffffffffffffffffffffffffffffff16906020019091905050610243565b604051808215151515815260200191505060405180910390f35b341561019857600080fd5b6101d160048080356000191690602001909190803573ffffffffffffffffffffffffffffffffffffffff16906020019091905050610251565b604051808215151515815260200191505060405180910390f35b34156101f657600080fd5b61021960048080356000191690602001909190803590602001909190505061025c565b6040518082815260200191505060405180910390f35b6000809050919050565b6000809050919050565b600080905095945050505050565b600080905092915050565b6000809050929150505600a165627a7a72305820c4397c374c42cf1d44b3d285015a170c2fa5b4e5da31f2ae5ae6938fa122f7430029",
+  "deployedBytecode": "0x60606040526004361061006d576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806303a896a1146100725780632762dd8c146100ad5780635f0280ba146100e8578063977a5e641461018d57806399114d84146101eb575b600080fd5b341561007d57600080fd5b61009760048080356000191690602001909190505061022f565b6040518082815260200191505060405180910390f35b34156100b857600080fd5b6100d2600480803560001916906020019091905050610239565b6040518082815260200191505060405180910390f35b34156100f357600080fd5b61017360048080356000191690602001909190803573ffffffffffffffffffffffffffffffffffffffff1690602001909190803573ffffffffffffffffffffffffffffffffffffffff1690602001909190803590602001909190803573ffffffffffffffffffffffffffffffffffffffff16906020019091905050610243565b604051808215151515815260200191505060405180910390f35b341561019857600080fd5b6101d160048080356000191690602001909190803573ffffffffffffffffffffffffffffffffffffffff16906020019091905050610251565b604051808215151515815260200191505060405180910390f35b34156101f657600080fd5b61021960048080356000191690602001909190803590602001909190505061025c565b6040518082815260200191505060405180910390f35b6000809050919050565b6000809050919050565b600080905095945050505050565b600080905092915050565b6000809050929150505600a165627a7a72305820c4397c374c42cf1d44b3d285015a170c2fa5b4e5da31f2ae5ae6938fa122f7430029",
+  "sourceMap": "897:3206:38:-;;;;;;;;;;;;;;;;;",
+  "deployedSourceMap": "897:3206:38:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;3816:150;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;3974:126;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;2434:269;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1538:174;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;3320:210;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;3816:150;3915:17;3957:1;3950:8;;3816:150;;;:::o;3974:126::-;4062:4;4091:1;4084:8;;3974:126;;;:::o;2434:269::-;2652:13;2690:5;2683:12;;2434:269;;;;;;;:::o;1538:174::-;1661:13;1699:5;1692:12;;1538:174;;;;:::o;3320:210::-;3468:28;3521:1;3514:8;;3320:210;;;;:::o",
+  "source": "/*\r\n\r\n  Copyright 2017 Dharma Labs Inc.\r\n\r\n  Licensed under the Apache License, Version 2.0 (the \"License\");\r\n  you may not use this file except in compliance with the License.\r\n  You may obtain a copy of the License at\r\n\r\n    http://www.apache.org/licenses/LICENSE-2.0\r\n\r\n  Unless required by applicable law or agreed to in writing, software\r\n  distributed under the License is distributed on an \"AS IS\" BASIS,\r\n  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\r\n  See the License for the specific language governing permissions and\r\n  limitations under the License.\r\n\r\n*/\r\n\r\npragma solidity 0.4.18;\r\n\r\nimport \"../../TermsContract.sol\";\r\n\r\n\r\n/**\r\n * Contract created for testing purposes that will consistently reject\r\n * debt order fills that are mapped to it by returning `false` for\r\n * `registerTermStart`\r\n *\r\n * Author: Nadav Hollander Github: nadavhollander\r\n */\r\ncontract IncompatibleTermsContract is TermsContract {\r\n    /// When called, the registerTermStart function registers the fact that\r\n    ///    the debt agreement has begun.  Given that the SimpleInterestTermsContract\r\n    ///    doesn't rely on taking any sorts of actions when the loan term begins,\r\n    ///    we simply validate DebtKernel is the transaction sender, and return\r\n    ///    `true` if the debt agreement is associated with this terms contract.\r\n    /// @param  agreementId bytes32. The agreement id (issuance hash) of the debt agreement to which this pertains.\r\n    /// @return _success bool. Acknowledgment of whether\r\n    function registerTermStart(\r\n        bytes32 agreementId,\r\n        address debtor\r\n    )\r\n        public\r\n        returns (bool _success)\r\n    {\r\n        return false;\r\n    }\r\n\r\n     /// When called, the registerRepayment function records the debtor's\r\n     ///  repayment, as well as any auxiliary metadata needed by the contract\r\n     ///  to determine ex post facto the value repaid (e.g. current USD\r\n     ///  exchange rate)\r\n     /// @param  agreementId bytes32. The agreement id (issuance hash) of the debt agreement to which this pertains.\r\n     /// @param  payer address. The address of the payer.\r\n     /// @param  beneficiary address. The address of the payment's beneficiary.\r\n     /// @param  unitsOfRepayment uint. The units-of-value repaid in the transaction.\r\n     /// @param  tokenAddress address. The address of the token with which the repayment transaction was executed.\r\n    function registerRepayment(\r\n        bytes32 agreementId,\r\n        address payer,\r\n        address beneficiary,\r\n        uint256 unitsOfRepayment,\r\n        address tokenAddress\r\n    )\r\n        public\r\n        returns (bool _success)\r\n    {\r\n        return false;\r\n    }\r\n\r\n     /// Returns the cumulative units-of-value expected to be repaid given a block's timestamp.\r\n     ///  Note this is not a constant function -- this value can vary on basis of any number of\r\n     ///  conditions (e.g. interest rates can be renegotiated if repayments are delinquent).\r\n     /// @param  agreementId bytes32. The agreement id (issuance hash) of the debt agreement to which this pertains.\r\n     /// @param  timestamp uint. The timestamp for which repayment expectation is being queried.\r\n     /// @return uint256 The cumulative units-of-value expected to be repaid given a block's timestamp.\r\n    function getExpectedRepaymentValue(\r\n        bytes32 agreementId,\r\n        uint256 timestamp\r\n    )\r\n        public\r\n        view\r\n        returns (uint _expectedRepaymentValue)\r\n    {\r\n        return 0;\r\n    }\r\n\r\n     /// Returns the cumulative units-of-value repaid to date.\r\n     /// @param agreementId bytes32. The agreement id (issuance hash) of the debt agreement to which this pertains.\r\n     /// @return uint256 The cumulative units-of-value repaid by the specified block timestamp.\r\n    function getValueRepaidToDate(bytes32 agreementId)\r\n        public\r\n        view\r\n        returns (uint _valueRepaid)\r\n    {\r\n        return 0;\r\n    }\r\n\r\n    function getTermEndTimestamp(\r\n        bytes32 _agreementId\r\n    ) public view returns (uint)\r\n    {\r\n        return 0;\r\n    }\r\n}\r\n",
+  "sourcePath": "/mnt/c/Users/devan/fixer/check-dharma/contracts/test/terms_contracts/IncompatibleTermsContract.sol",
+  "ast": {
+    "attributes": {
+      "absolutePath": "/mnt/c/Users/devan/fixer/check-dharma/contracts/test/terms_contracts/IncompatibleTermsContract.sol",
+      "exportedSymbols": {
+        "IncompatibleTermsContract": [
+          13812
+        ]
+      }
+    },
+    "children": [
+      {
+        "attributes": {
+          "literals": [
+            "solidity",
+            "0.4",
+            ".18"
+          ]
+        },
+        "id": 13746,
+        "name": "PragmaDirective",
+        "src": "602:23:38"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 5908,
+          "absolutePath": "/mnt/c/Users/devan/fixer/check-dharma/contracts/TermsContract.sol",
+          "file": "../../TermsContract.sol",
+          "scope": 13813,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 13747,
+        "name": "ImportDirective",
+        "src": "629:33:38"
+      },
+      {
+        "attributes": {
+          "contractDependencies": [
+            5907
+          ],
+          "contractKind": "contract",
+          "documentation": "Contract created for testing purposes that will consistently reject\r\ndebt order fills that are mapped to it by returning `false` for\r\n`registerTermStart`\r\n\n * Author: Nadav Hollander Github: nadavhollander\r",
+          "fullyImplemented": true,
+          "linearizedBaseContracts": [
+            13812,
+            5907
+          ],
+          "name": "IncompatibleTermsContract",
+          "scope": 13813
+        },
+        "children": [
+          {
+            "attributes": {
+              "arguments": [
+                null
+              ]
+            },
+            "children": [
+              {
+                "attributes": {
+                  "contractScope": null,
+                  "name": "TermsContract",
+                  "referencedDeclaration": 5907,
+                  "type": "contract TermsContract"
+                },
+                "id": 13748,
+                "name": "UserDefinedTypeName",
+                "src": "935:13:38"
+              }
+            ],
+            "id": 13749,
+            "name": "InheritanceSpecifier",
+            "src": "935:13:38"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "implemented": true,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "registerTermStart",
+              "payable": false,
+              "scope": 13812,
+              "stateMutability": "nonpayable",
+              "superFunction": 5868,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "agreementId",
+                      "scope": 13761,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "bytes32",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "bytes32",
+                          "type": "bytes32"
+                        },
+                        "id": 13750,
+                        "name": "ElementaryTypeName",
+                        "src": "1575:7:38"
+                      }
+                    ],
+                    "id": 13751,
+                    "name": "VariableDeclaration",
+                    "src": "1575:19:38"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "debtor",
+                      "scope": 13761,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 13752,
+                        "name": "ElementaryTypeName",
+                        "src": "1605:7:38"
+                      }
+                    ],
+                    "id": 13753,
+                    "name": "VariableDeclaration",
+                    "src": "1605:14:38"
+                  }
+                ],
+                "id": 13754,
+                "name": "ParameterList",
+                "src": "1564:62:38"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_success",
+                      "scope": 13761,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "bool",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "bool",
+                          "type": "bool"
+                        },
+                        "id": 13755,
+                        "name": "ElementaryTypeName",
+                        "src": "1661:4:38"
+                      }
+                    ],
+                    "id": 13756,
+                    "name": "VariableDeclaration",
+                    "src": "1661:13:38"
+                  }
+                ],
+                "id": 13757,
+                "name": "ParameterList",
+                "src": "1660:15:38"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "functionReturnParameters": 13757
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "hexvalue": "66616c7365",
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "lValueRequested": false,
+                          "subdenomination": null,
+                          "token": "bool",
+                          "type": "bool",
+                          "value": "false"
+                        },
+                        "id": 13758,
+                        "name": "Literal",
+                        "src": "1699:5:38"
+                      }
+                    ],
+                    "id": 13759,
+                    "name": "Return",
+                    "src": "1692:12:38"
+                  }
+                ],
+                "id": 13760,
+                "name": "Block",
+                "src": "1681:31:38"
+              }
+            ],
+            "id": 13761,
+            "name": "FunctionDefinition",
+            "src": "1538:174:38"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "implemented": true,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "registerRepayment",
+              "payable": false,
+              "scope": 13812,
+              "stateMutability": "nonpayable",
+              "superFunction": 5883,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "agreementId",
+                      "scope": 13779,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "bytes32",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "bytes32",
+                          "type": "bytes32"
+                        },
+                        "id": 13762,
+                        "name": "ElementaryTypeName",
+                        "src": "2471:7:38"
+                      }
+                    ],
+                    "id": 13763,
+                    "name": "VariableDeclaration",
+                    "src": "2471:19:38"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "payer",
+                      "scope": 13779,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 13764,
+                        "name": "ElementaryTypeName",
+                        "src": "2501:7:38"
+                      }
+                    ],
+                    "id": 13765,
+                    "name": "VariableDeclaration",
+                    "src": "2501:13:38"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "beneficiary",
+                      "scope": 13779,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 13766,
+                        "name": "ElementaryTypeName",
+                        "src": "2525:7:38"
+                      }
+                    ],
+                    "id": 13767,
+                    "name": "VariableDeclaration",
+                    "src": "2525:19:38"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "unitsOfRepayment",
+                      "scope": 13779,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 13768,
+                        "name": "ElementaryTypeName",
+                        "src": "2555:7:38"
+                      }
+                    ],
+                    "id": 13769,
+                    "name": "VariableDeclaration",
+                    "src": "2555:24:38"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "tokenAddress",
+                      "scope": 13779,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 13770,
+                        "name": "ElementaryTypeName",
+                        "src": "2590:7:38"
+                      }
+                    ],
+                    "id": 13771,
+                    "name": "VariableDeclaration",
+                    "src": "2590:20:38"
+                  }
+                ],
+                "id": 13772,
+                "name": "ParameterList",
+                "src": "2460:157:38"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_success",
+                      "scope": 13779,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "bool",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "bool",
+                          "type": "bool"
+                        },
+                        "id": 13773,
+                        "name": "ElementaryTypeName",
+                        "src": "2652:4:38"
+                      }
+                    ],
+                    "id": 13774,
+                    "name": "VariableDeclaration",
+                    "src": "2652:13:38"
+                  }
+                ],
+                "id": 13775,
+                "name": "ParameterList",
+                "src": "2651:15:38"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "functionReturnParameters": 13775
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "hexvalue": "66616c7365",
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "lValueRequested": false,
+                          "subdenomination": null,
+                          "token": "bool",
+                          "type": "bool",
+                          "value": "false"
+                        },
+                        "id": 13776,
+                        "name": "Literal",
+                        "src": "2690:5:38"
+                      }
+                    ],
+                    "id": 13777,
+                    "name": "Return",
+                    "src": "2683:12:38"
+                  }
+                ],
+                "id": 13778,
+                "name": "Block",
+                "src": "2672:31:38"
+              }
+            ],
+            "id": 13779,
+            "name": "FunctionDefinition",
+            "src": "2434:269:38"
+          },
+          {
+            "attributes": {
+              "constant": true,
+              "implemented": true,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "getExpectedRepaymentValue",
+              "payable": false,
+              "scope": 13812,
+              "stateMutability": "view",
+              "superFunction": 5892,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "agreementId",
+                      "scope": 13791,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "bytes32",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "bytes32",
+                          "type": "bytes32"
+                        },
+                        "id": 13780,
+                        "name": "ElementaryTypeName",
+                        "src": "3365:7:38"
+                      }
+                    ],
+                    "id": 13781,
+                    "name": "VariableDeclaration",
+                    "src": "3365:19:38"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "timestamp",
+                      "scope": 13791,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 13782,
+                        "name": "ElementaryTypeName",
+                        "src": "3395:7:38"
+                      }
+                    ],
+                    "id": 13783,
+                    "name": "VariableDeclaration",
+                    "src": "3395:17:38"
+                  }
+                ],
+                "id": 13784,
+                "name": "ParameterList",
+                "src": "3354:65:38"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_expectedRepaymentValue",
+                      "scope": 13791,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint",
+                          "type": "uint256"
+                        },
+                        "id": 13785,
+                        "name": "ElementaryTypeName",
+                        "src": "3468:4:38"
+                      }
+                    ],
+                    "id": 13786,
+                    "name": "VariableDeclaration",
+                    "src": "3468:28:38"
+                  }
+                ],
+                "id": 13787,
+                "name": "ParameterList",
+                "src": "3467:30:38"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "functionReturnParameters": 13787
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "hexvalue": "30",
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "lValueRequested": false,
+                          "subdenomination": null,
+                          "token": "number",
+                          "type": "int_const 0",
+                          "value": "0"
+                        },
+                        "id": 13788,
+                        "name": "Literal",
+                        "src": "3521:1:38"
+                      }
+                    ],
+                    "id": 13789,
+                    "name": "Return",
+                    "src": "3514:8:38"
+                  }
+                ],
+                "id": 13790,
+                "name": "Block",
+                "src": "3503:27:38"
+              }
+            ],
+            "id": 13791,
+            "name": "FunctionDefinition",
+            "src": "3320:210:38"
+          },
+          {
+            "attributes": {
+              "constant": true,
+              "implemented": true,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "getValueRepaidToDate",
+              "payable": false,
+              "scope": 13812,
+              "stateMutability": "view",
+              "superFunction": 5899,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "agreementId",
+                      "scope": 13801,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "bytes32",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "bytes32",
+                          "type": "bytes32"
+                        },
+                        "id": 13792,
+                        "name": "ElementaryTypeName",
+                        "src": "3846:7:38"
+                      }
+                    ],
+                    "id": 13793,
+                    "name": "VariableDeclaration",
+                    "src": "3846:19:38"
+                  }
+                ],
+                "id": 13794,
+                "name": "ParameterList",
+                "src": "3845:21:38"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_valueRepaid",
+                      "scope": 13801,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint",
+                          "type": "uint256"
+                        },
+                        "id": 13795,
+                        "name": "ElementaryTypeName",
+                        "src": "3915:4:38"
+                      }
+                    ],
+                    "id": 13796,
+                    "name": "VariableDeclaration",
+                    "src": "3915:17:38"
+                  }
+                ],
+                "id": 13797,
+                "name": "ParameterList",
+                "src": "3914:19:38"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "functionReturnParameters": 13797
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "hexvalue": "30",
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "lValueRequested": false,
+                          "subdenomination": null,
+                          "token": "number",
+                          "type": "int_const 0",
+                          "value": "0"
+                        },
+                        "id": 13798,
+                        "name": "Literal",
+                        "src": "3957:1:38"
+                      }
+                    ],
+                    "id": 13799,
+                    "name": "Return",
+                    "src": "3950:8:38"
+                  }
+                ],
+                "id": 13800,
+                "name": "Block",
+                "src": "3939:27:38"
+              }
+            ],
+            "id": 13801,
+            "name": "FunctionDefinition",
+            "src": "3816:150:38"
+          },
+          {
+            "attributes": {
+              "constant": true,
+              "implemented": true,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "getTermEndTimestamp",
+              "payable": false,
+              "scope": 13812,
+              "stateMutability": "view",
+              "superFunction": 5906,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_agreementId",
+                      "scope": 13811,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "bytes32",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "bytes32",
+                          "type": "bytes32"
+                        },
+                        "id": 13802,
+                        "name": "ElementaryTypeName",
+                        "src": "4013:7:38"
+                      }
+                    ],
+                    "id": 13803,
+                    "name": "VariableDeclaration",
+                    "src": "4013:20:38"
+                  }
+                ],
+                "id": 13804,
+                "name": "ParameterList",
+                "src": "4002:38:38"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "",
+                      "scope": 13811,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint",
+                          "type": "uint256"
+                        },
+                        "id": 13805,
+                        "name": "ElementaryTypeName",
+                        "src": "4062:4:38"
+                      }
+                    ],
+                    "id": 13806,
+                    "name": "VariableDeclaration",
+                    "src": "4062:4:38"
+                  }
+                ],
+                "id": 13807,
+                "name": "ParameterList",
+                "src": "4061:6:38"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "functionReturnParameters": 13807
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "hexvalue": "30",
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "lValueRequested": false,
+                          "subdenomination": null,
+                          "token": "number",
+                          "type": "int_const 0",
+                          "value": "0"
+                        },
+                        "id": 13808,
+                        "name": "Literal",
+                        "src": "4091:1:38"
+                      }
+                    ],
+                    "id": 13809,
+                    "name": "Return",
+                    "src": "4084:8:38"
+                  }
+                ],
+                "id": 13810,
+                "name": "Block",
+                "src": "4073:27:38"
+              }
+            ],
+            "id": 13811,
+            "name": "FunctionDefinition",
+            "src": "3974:126:38"
+          }
+        ],
+        "id": 13812,
+        "name": "ContractDefinition",
+        "src": "897:3206:38"
+      }
+    ],
+    "id": 13813,
+    "name": "SourceUnit",
+    "src": "602:3503:38"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.18+commit.9cf6e910.Emscripten.clang"
+  },
+  "networks": {
+    "70": {
+      "events": {},
+      "links": {},
+      "address": "0xd3efc12559333898c1d3813611be4b520100178d"
+    }
+  },
+  "schemaVersion": "1.0.1",
+  "updatedAt": "2018-11-27T07:48:41.841Z"
+}

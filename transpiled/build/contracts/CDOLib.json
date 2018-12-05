@@ -1,0 +1,1139 @@
+{
+  "contractName": "CDOLib",
+  "abi": [
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "trancheLevel",
+          "type": "uint256"
+        },
+        {
+          "name": "minting",
+          "type": "uint256"
+        },
+        {
+          "name": "tranche",
+          "type": "CDOLib.Tranche storage"
+        },
+        {
+          "name": "trancheToken",
+          "type": "TrancheToken"
+        }
+      ],
+      "name": "purchaseShares",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "cdoAddress",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "minted",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "trancheLevel",
+          "type": "uint256"
+        }
+      ],
+      "name": "LogSharesPurchased",
+      "type": "event"
+    }
+  ],
+  "bytecode": "0x6060604052341561000f57600080fd5b6102ae8061001e6000396000f300606060405260043610610041576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806396c1020614610046575b600080fd5b61008d600480803590602001909190803590602001909190803590602001909190803573ffffffffffffffffffffffffffffffffffffffff1690602001909190505061008f565b005b60008090505b838110156101d4578260000180548060010182816100b39190610231565b916000526020600020900160008473ffffffffffffffffffffffffffffffffffffffff16639a1b706233308b6000604051602001526040518463ffffffff167c0100000000000000000000000000000000000000000000000000000000028152600401808473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018281526020019350505050602060405180830381600087803b151561019f57600080fd5b6102c65a03f115156101b057600080fd5b50505060405180519050909190915090600019169055508080600101915050610095565b3073ffffffffffffffffffffffffffffffffffffffff167ffe5841c2a80467306497e880c9de7b027915c456a60ce4291251865d567babbe8587604051808381526020018281526020019250505060405180910390a25050505050565b81548183558181151161025857818360005260206000209182019101610257919061025d565b5b505050565b61027f91905b8082111561027b576000816000905550600101610263565b5090565b905600a165627a7a723058204f73d38386bb25400ea6739a3ee2dff0ae54bdb215ebbbc6a4d6c747660cd6cd0029",
+  "deployedBytecode": "0x606060405260043610610041576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806396c1020614610046575b600080fd5b61008d600480803590602001909190803590602001909190803590602001909190803573ffffffffffffffffffffffffffffffffffffffff1690602001909190505061008f565b005b60008090505b838110156101d4578260000180548060010182816100b39190610231565b916000526020600020900160008473ffffffffffffffffffffffffffffffffffffffff16639a1b706233308b6000604051602001526040518463ffffffff167c0100000000000000000000000000000000000000000000000000000000028152600401808473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018281526020019350505050602060405180830381600087803b151561019f57600080fd5b6102c65a03f115156101b057600080fd5b50505060405180519050909190915090600019169055508080600101915050610095565b3073ffffffffffffffffffffffffffffffffffffffff167ffe5841c2a80467306497e880c9de7b027915c456a60ce4291251865d567babbe8587604051808381526020018281526020019250505060405180910390a25050505050565b81548183558181151161025857818360005260206000209182019101610257919061025d565b5b505050565b61027f91905b8082111561027b576000816000905550600101610263565b5090565b905600a165627a7a723058204f73d38386bb25400ea6739a3ee2dff0ae54bdb215ebbbc6a4d6c747660cd6cd0029",
+  "sourceMap": "1140:786:21:-;;;;;;;;;;;;;;;;;",
+  "deployedSourceMap": "1140:786:21:-;;;;;;;;;;;;;;;;;;;;;;;;1481:440;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1654:6;1663:1;1654:10;;1649:200;1670:7;1666:1;:11;1649:200;;;1695:7;:17;;:146;;;;;;;;;;;:::i;:::-;;;;;;;;;;1718:12;:29;;;1762:10;1795:4;1815:12;1718:122;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1695:146;;;;;;;;;;;;1679:3;;;;;;;1649:200;;;1884:4;1857:56;;;1891:7;1900:12;1857:56;;;;;;;;;;;;;;;;;;;;;;;;1481:440;;;;;:::o;1140:786::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;;:::o;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;:::o",
+  "source": "pragma solidity ^0.4.18;\r\n\r\nimport \"../CDO/TrancheToken.sol\";\r\nimport \"zeppelin-solidity/contracts/math/SafeMath.sol\";\r\n\r\n/**\r\n * CDOLib is a library that contains the definition of\r\n * a Tranche struct and the minting process of TrancheTokens.\r\n *\r\n * Because CDO is defined in a generic matter, all methods in\r\n * the CDO.sol will be defined here in the future. CDO.sol will\r\n * act as a storage contract for each unique CDO created and CDOLib\r\n * will be the master interface.\r\n *\r\n * This design allows for code re-use and cheap (gas) CDO's.\r\n *\r\n * TODO: Gas optimize through ordering of variable declarations\r\n * before putting into production. Also need to run gas tests\r\n * to check if the contract gets run enough in a production\r\n * environment that it is cheaper to keep local calls only\r\n * vs. making library calls each time. This will lead to the\r\n * final design decision of whether to abstract logic into\r\n * a master library contract or keep it in each CDO.sol.\r\n * (Comparing Gas Cost at Deployment vs Running of Functions)\r\n *\r\n * Code has been left in a readable / organized manner.\r\n *\r\n * Author: Devan Purhar\r\n */\r\n\r\nlibrary CDOLib {\r\n   using SafeMath for *;\r\n\r\n   event LogSharesPurchased(\r\n       address indexed cdoAddress,\r\n       uint minted,\r\n       uint trancheLevel\r\n   );\r\n\r\n  struct Tranche {\r\n    bytes32[] issuances;\r\n    uint balance;\r\n    uint numberOfIssuances;\r\n    uint interestRate;\r\n    uint riskRating;\r\n    uint trancheLevel;\r\n  }\r\n\r\n  function purchaseShares(\r\n      uint trancheLevel,\r\n      uint minting,\r\n      Tranche storage tranche,\r\n      TrancheToken trancheToken\r\n  )\r\n      public\r\n  {\r\n\r\n    for (uint i = 0; i < minting; i++) {\r\n        tranche.issuances.push(trancheToken.mintTrancheToken(\r\n            msg.sender,\r\n            address(this),\r\n            trancheLevel\r\n          ));\r\n    }\r\n\r\n    LogSharesPurchased(address(this), minting, trancheLevel);\r\n\r\n  }\r\n\r\n}\r\n",
+  "sourcePath": "/mnt/c/Users/devan/fixer/check-dharma/contracts/libraries/CDOLib.sol",
+  "ast": {
+    "attributes": {
+      "absolutePath": "/mnt/c/Users/devan/fixer/check-dharma/contracts/libraries/CDOLib.sol",
+      "exportedSymbols": {
+        "CDOLib": [
+          7279
+        ]
+      }
+    },
+    "children": [
+      {
+        "attributes": {
+          "literals": [
+            "solidity",
+            "^",
+            "0.4",
+            ".18"
+          ]
+        },
+        "id": 7204,
+        "name": "PragmaDirective",
+        "src": "0:24:21"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 1142,
+          "absolutePath": "/mnt/c/Users/devan/fixer/check-dharma/contracts/CDO/TrancheToken.sol",
+          "file": "../CDO/TrancheToken.sol",
+          "scope": 7280,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 7205,
+        "name": "ImportDirective",
+        "src": "28:33:21"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 15358,
+          "absolutePath": "zeppelin-solidity/contracts/math/SafeMath.sol",
+          "file": "zeppelin-solidity/contracts/math/SafeMath.sol",
+          "scope": 7280,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 7206,
+        "name": "ImportDirective",
+        "src": "63:55:21"
+      },
+      {
+        "attributes": {
+          "baseContracts": [
+            null
+          ],
+          "contractDependencies": [
+            null
+          ],
+          "contractKind": "library",
+          "documentation": "CDOLib is a library that contains the definition of\r\na Tranche struct and the minting process of TrancheTokens.\r\n\n * Because CDO is defined in a generic matter, all methods in\r\nthe CDO.sol will be defined here in the future. CDO.sol will\r\nact as a storage contract for each unique CDO created and CDOLib\r\nwill be the master interface.\r\n\n * This design allows for code re-use and cheap (gas) CDO's.\r\n\n * TODO: Gas optimize through ordering of variable declarations\r\nbefore putting into production. Also need to run gas tests\r\nto check if the contract gets run enough in a production\r\nenvironment that it is cheaper to keep local calls only\r\nvs. making library calls each time. This will lead to the\r\nfinal design decision of whether to abstract logic into\r\na master library contract or keep it in each CDO.sol.\r\n(Comparing Gas Cost at Deployment vs Running of Functions)\r\n\n * Code has been left in a readable / organized manner.\r\n\n * Author: Devan Purhar\r",
+          "fullyImplemented": true,
+          "linearizedBaseContracts": [
+            7279
+          ],
+          "name": "CDOLib",
+          "scope": 7280
+        },
+        "children": [
+          {
+            "attributes": {
+              "typeName": null
+            },
+            "children": [
+              {
+                "attributes": {
+                  "contractScope": null,
+                  "name": "SafeMath",
+                  "referencedDeclaration": 15357,
+                  "type": "library SafeMath"
+                },
+                "id": 7207,
+                "name": "UserDefinedTypeName",
+                "src": "1167:8:21"
+              }
+            ],
+            "id": 7208,
+            "name": "UsingForDirective",
+            "src": "1161:21:21"
+          },
+          {
+            "attributes": {
+              "anonymous": false,
+              "name": "LogSharesPurchased"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": true,
+                      "name": "cdoAddress",
+                      "scope": 7216,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 7209,
+                        "name": "ElementaryTypeName",
+                        "src": "1223:7:21"
+                      }
+                    ],
+                    "id": 7210,
+                    "name": "VariableDeclaration",
+                    "src": "1223:26:21"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": false,
+                      "name": "minted",
+                      "scope": 7216,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint",
+                          "type": "uint256"
+                        },
+                        "id": 7211,
+                        "name": "ElementaryTypeName",
+                        "src": "1259:4:21"
+                      }
+                    ],
+                    "id": 7212,
+                    "name": "VariableDeclaration",
+                    "src": "1259:11:21"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": false,
+                      "name": "trancheLevel",
+                      "scope": 7216,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint",
+                          "type": "uint256"
+                        },
+                        "id": 7213,
+                        "name": "ElementaryTypeName",
+                        "src": "1280:4:21"
+                      }
+                    ],
+                    "id": 7214,
+                    "name": "VariableDeclaration",
+                    "src": "1280:17:21"
+                  }
+                ],
+                "id": 7215,
+                "name": "ParameterList",
+                "src": "1213:90:21"
+              }
+            ],
+            "id": 7216,
+            "name": "EventDefinition",
+            "src": "1189:115:21"
+          },
+          {
+            "attributes": {
+              "canonicalName": "CDOLib.Tranche",
+              "name": "Tranche",
+              "scope": 7279,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "constant": false,
+                  "name": "issuances",
+                  "scope": 7230,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "bytes32[] storage pointer",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "length": null,
+                      "type": "bytes32[] storage pointer"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "bytes32",
+                          "type": "bytes32"
+                        },
+                        "id": 7217,
+                        "name": "ElementaryTypeName",
+                        "src": "1332:7:21"
+                      }
+                    ],
+                    "id": 7218,
+                    "name": "ArrayTypeName",
+                    "src": "1332:9:21"
+                  }
+                ],
+                "id": 7219,
+                "name": "VariableDeclaration",
+                "src": "1332:19:21"
+              },
+              {
+                "attributes": {
+                  "constant": false,
+                  "name": "balance",
+                  "scope": 7230,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "uint256",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "uint",
+                      "type": "uint256"
+                    },
+                    "id": 7220,
+                    "name": "ElementaryTypeName",
+                    "src": "1358:4:21"
+                  }
+                ],
+                "id": 7221,
+                "name": "VariableDeclaration",
+                "src": "1358:12:21"
+              },
+              {
+                "attributes": {
+                  "constant": false,
+                  "name": "numberOfIssuances",
+                  "scope": 7230,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "uint256",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "uint",
+                      "type": "uint256"
+                    },
+                    "id": 7222,
+                    "name": "ElementaryTypeName",
+                    "src": "1377:4:21"
+                  }
+                ],
+                "id": 7223,
+                "name": "VariableDeclaration",
+                "src": "1377:22:21"
+              },
+              {
+                "attributes": {
+                  "constant": false,
+                  "name": "interestRate",
+                  "scope": 7230,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "uint256",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "uint",
+                      "type": "uint256"
+                    },
+                    "id": 7224,
+                    "name": "ElementaryTypeName",
+                    "src": "1406:4:21"
+                  }
+                ],
+                "id": 7225,
+                "name": "VariableDeclaration",
+                "src": "1406:17:21"
+              },
+              {
+                "attributes": {
+                  "constant": false,
+                  "name": "riskRating",
+                  "scope": 7230,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "uint256",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "uint",
+                      "type": "uint256"
+                    },
+                    "id": 7226,
+                    "name": "ElementaryTypeName",
+                    "src": "1430:4:21"
+                  }
+                ],
+                "id": 7227,
+                "name": "VariableDeclaration",
+                "src": "1430:15:21"
+              },
+              {
+                "attributes": {
+                  "constant": false,
+                  "name": "trancheLevel",
+                  "scope": 7230,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "uint256",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "uint",
+                      "type": "uint256"
+                    },
+                    "id": 7228,
+                    "name": "ElementaryTypeName",
+                    "src": "1452:4:21"
+                  }
+                ],
+                "id": 7229,
+                "name": "VariableDeclaration",
+                "src": "1452:17:21"
+              }
+            ],
+            "id": 7230,
+            "name": "StructDefinition",
+            "src": "1310:165:21"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "implemented": true,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "purchaseShares",
+              "payable": false,
+              "scope": 7279,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "trancheLevel",
+                      "scope": 7278,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint",
+                          "type": "uint256"
+                        },
+                        "id": 7231,
+                        "name": "ElementaryTypeName",
+                        "src": "1513:4:21"
+                      }
+                    ],
+                    "id": 7232,
+                    "name": "VariableDeclaration",
+                    "src": "1513:17:21"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "minting",
+                      "scope": 7278,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint",
+                          "type": "uint256"
+                        },
+                        "id": 7233,
+                        "name": "ElementaryTypeName",
+                        "src": "1539:4:21"
+                      }
+                    ],
+                    "id": 7234,
+                    "name": "VariableDeclaration",
+                    "src": "1539:12:21"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "tranche",
+                      "scope": 7278,
+                      "stateVariable": false,
+                      "storageLocation": "storage",
+                      "type": "struct CDOLib.Tranche storage pointer",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "contractScope": null,
+                          "name": "Tranche",
+                          "referencedDeclaration": 7230,
+                          "type": "struct CDOLib.Tranche storage pointer"
+                        },
+                        "id": 7235,
+                        "name": "UserDefinedTypeName",
+                        "src": "1560:7:21"
+                      }
+                    ],
+                    "id": 7236,
+                    "name": "VariableDeclaration",
+                    "src": "1560:23:21"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "trancheToken",
+                      "scope": 7278,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "contract TrancheToken",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "contractScope": null,
+                          "name": "TrancheToken",
+                          "referencedDeclaration": 1141,
+                          "type": "contract TrancheToken"
+                        },
+                        "id": 7237,
+                        "name": "UserDefinedTypeName",
+                        "src": "1592:12:21"
+                      }
+                    ],
+                    "id": 7238,
+                    "name": "VariableDeclaration",
+                    "src": "1592:25:21"
+                  }
+                ],
+                "id": 7239,
+                "name": "ParameterList",
+                "src": "1504:118:21"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 7240,
+                "name": "ParameterList",
+                "src": "1640:0:21"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "assignments": [
+                            7242
+                          ]
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "constant": false,
+                              "name": "i",
+                              "scope": 7278,
+                              "stateVariable": false,
+                              "storageLocation": "default",
+                              "type": "uint256",
+                              "value": null,
+                              "visibility": "internal"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "name": "uint",
+                                  "type": "uint256"
+                                },
+                                "id": 7241,
+                                "name": "ElementaryTypeName",
+                                "src": "1654:4:21"
+                              }
+                            ],
+                            "id": 7242,
+                            "name": "VariableDeclaration",
+                            "src": "1654:6:21"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "hexvalue": "30",
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": true,
+                              "lValueRequested": false,
+                              "subdenomination": null,
+                              "token": "number",
+                              "type": "int_const 0",
+                              "value": "0"
+                            },
+                            "id": 7243,
+                            "name": "Literal",
+                            "src": "1663:1:21"
+                          }
+                        ],
+                        "id": 7244,
+                        "name": "VariableDeclarationStatement",
+                        "src": "1654:10:21"
+                      },
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "commonType": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          },
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "operator": "<",
+                          "type": "bool"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 7242,
+                              "type": "uint256",
+                              "value": "i"
+                            },
+                            "id": 7245,
+                            "name": "Identifier",
+                            "src": "1666:1:21"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 7234,
+                              "type": "uint256",
+                              "value": "minting"
+                            },
+                            "id": 7246,
+                            "name": "Identifier",
+                            "src": "1670:7:21"
+                          }
+                        ],
+                        "id": 7247,
+                        "name": "BinaryOperation",
+                        "src": "1666:11:21"
+                      },
+                      {
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "operator": "++",
+                              "prefix": false,
+                              "type": "uint256"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 7242,
+                                  "type": "uint256",
+                                  "value": "i"
+                                },
+                                "id": 7248,
+                                "name": "Identifier",
+                                "src": "1679:1:21"
+                              }
+                            ],
+                            "id": 7249,
+                            "name": "UnaryOperation",
+                            "src": "1679:3:21"
+                          }
+                        ],
+                        "id": 7250,
+                        "name": "ExpressionStatement",
+                        "src": "1679:3:21"
+                      },
+                      {
+                        "children": [
+                          {
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": false,
+                                  "isStructConstructorCall": false,
+                                  "lValueRequested": false,
+                                  "names": [
+                                    null
+                                  ],
+                                  "type": "uint256",
+                                  "type_conversion": false
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": [
+                                        {
+                                          "typeIdentifier": "t_bytes32",
+                                          "typeString": "bytes32"
+                                        }
+                                      ],
+                                      "isConstant": false,
+                                      "isLValue": false,
+                                      "isPure": false,
+                                      "lValueRequested": false,
+                                      "member_name": "push",
+                                      "referencedDeclaration": null,
+                                      "type": "function (bytes32) returns (uint256)"
+                                    },
+                                    "children": [
+                                      {
+                                        "attributes": {
+                                          "argumentTypes": null,
+                                          "isConstant": false,
+                                          "isLValue": true,
+                                          "isPure": false,
+                                          "lValueRequested": false,
+                                          "member_name": "issuances",
+                                          "referencedDeclaration": 7219,
+                                          "type": "bytes32[] storage ref"
+                                        },
+                                        "children": [
+                                          {
+                                            "attributes": {
+                                              "argumentTypes": null,
+                                              "overloadedDeclarations": [
+                                                null
+                                              ],
+                                              "referencedDeclaration": 7236,
+                                              "type": "struct CDOLib.Tranche storage pointer",
+                                              "value": "tranche"
+                                            },
+                                            "id": 7251,
+                                            "name": "Identifier",
+                                            "src": "1695:7:21"
+                                          }
+                                        ],
+                                        "id": 7254,
+                                        "name": "MemberAccess",
+                                        "src": "1695:17:21"
+                                      }
+                                    ],
+                                    "id": 7255,
+                                    "name": "MemberAccess",
+                                    "src": "1695:22:21"
+                                  },
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "isConstant": false,
+                                      "isLValue": false,
+                                      "isPure": false,
+                                      "isStructConstructorCall": false,
+                                      "lValueRequested": false,
+                                      "names": [
+                                        null
+                                      ],
+                                      "type": "bytes32",
+                                      "type_conversion": false
+                                    },
+                                    "children": [
+                                      {
+                                        "attributes": {
+                                          "argumentTypes": [
+                                            {
+                                              "typeIdentifier": "t_address",
+                                              "typeString": "address"
+                                            },
+                                            {
+                                              "typeIdentifier": "t_address",
+                                              "typeString": "address"
+                                            },
+                                            {
+                                              "typeIdentifier": "t_uint256",
+                                              "typeString": "uint256"
+                                            }
+                                          ],
+                                          "isConstant": false,
+                                          "isLValue": false,
+                                          "isPure": false,
+                                          "lValueRequested": false,
+                                          "member_name": "mintTrancheToken",
+                                          "referencedDeclaration": 1125,
+                                          "type": "function (address,address,uint256) external returns (bytes32)"
+                                        },
+                                        "children": [
+                                          {
+                                            "attributes": {
+                                              "argumentTypes": null,
+                                              "overloadedDeclarations": [
+                                                null
+                                              ],
+                                              "referencedDeclaration": 7238,
+                                              "type": "contract TrancheToken",
+                                              "value": "trancheToken"
+                                            },
+                                            "id": 7256,
+                                            "name": "Identifier",
+                                            "src": "1718:12:21"
+                                          }
+                                        ],
+                                        "id": 7257,
+                                        "name": "MemberAccess",
+                                        "src": "1718:29:21"
+                                      },
+                                      {
+                                        "attributes": {
+                                          "argumentTypes": null,
+                                          "isConstant": false,
+                                          "isLValue": false,
+                                          "isPure": false,
+                                          "lValueRequested": false,
+                                          "member_name": "sender",
+                                          "referencedDeclaration": null,
+                                          "type": "address"
+                                        },
+                                        "children": [
+                                          {
+                                            "attributes": {
+                                              "argumentTypes": null,
+                                              "overloadedDeclarations": [
+                                                null
+                                              ],
+                                              "referencedDeclaration": 17095,
+                                              "type": "msg",
+                                              "value": "msg"
+                                            },
+                                            "id": 7258,
+                                            "name": "Identifier",
+                                            "src": "1762:3:21"
+                                          }
+                                        ],
+                                        "id": 7259,
+                                        "name": "MemberAccess",
+                                        "src": "1762:10:21"
+                                      },
+                                      {
+                                        "attributes": {
+                                          "argumentTypes": null,
+                                          "isConstant": false,
+                                          "isLValue": false,
+                                          "isPure": false,
+                                          "isStructConstructorCall": false,
+                                          "lValueRequested": false,
+                                          "names": [
+                                            null
+                                          ],
+                                          "type": "address",
+                                          "type_conversion": true
+                                        },
+                                        "children": [
+                                          {
+                                            "attributes": {
+                                              "argumentTypes": [
+                                                {
+                                                  "typeIdentifier": "t_contract$_CDOLib_$7279",
+                                                  "typeString": "library CDOLib"
+                                                }
+                                              ],
+                                              "isConstant": false,
+                                              "isLValue": false,
+                                              "isPure": true,
+                                              "lValueRequested": false,
+                                              "type": "type(address)",
+                                              "value": "address"
+                                            },
+                                            "id": 7260,
+                                            "name": "ElementaryTypeNameExpression",
+                                            "src": "1787:7:21"
+                                          },
+                                          {
+                                            "attributes": {
+                                              "argumentTypes": null,
+                                              "overloadedDeclarations": [
+                                                null
+                                              ],
+                                              "referencedDeclaration": 17162,
+                                              "type": "library CDOLib",
+                                              "value": "this"
+                                            },
+                                            "id": 7261,
+                                            "name": "Identifier",
+                                            "src": "1795:4:21"
+                                          }
+                                        ],
+                                        "id": 7262,
+                                        "name": "FunctionCall",
+                                        "src": "1787:13:21"
+                                      },
+                                      {
+                                        "attributes": {
+                                          "argumentTypes": null,
+                                          "overloadedDeclarations": [
+                                            null
+                                          ],
+                                          "referencedDeclaration": 7232,
+                                          "type": "uint256",
+                                          "value": "trancheLevel"
+                                        },
+                                        "id": 7263,
+                                        "name": "Identifier",
+                                        "src": "1815:12:21"
+                                      }
+                                    ],
+                                    "id": 7264,
+                                    "name": "FunctionCall",
+                                    "src": "1718:122:21"
+                                  }
+                                ],
+                                "id": 7265,
+                                "name": "FunctionCall",
+                                "src": "1695:146:21"
+                              }
+                            ],
+                            "id": 7266,
+                            "name": "ExpressionStatement",
+                            "src": "1695:146:21"
+                          }
+                        ],
+                        "id": 7267,
+                        "name": "Block",
+                        "src": "1684:165:21"
+                      }
+                    ],
+                    "id": 7268,
+                    "name": "ForStatement",
+                    "src": "1649:200:21"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "tuple()",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                },
+                                {
+                                  "typeIdentifier": "t_uint256",
+                                  "typeString": "uint256"
+                                },
+                                {
+                                  "typeIdentifier": "t_uint256",
+                                  "typeString": "uint256"
+                                }
+                              ],
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 7216,
+                              "type": "function (address,uint256,uint256)",
+                              "value": "LogSharesPurchased"
+                            },
+                            "id": 7269,
+                            "name": "Identifier",
+                            "src": "1857:18:21"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "isStructConstructorCall": false,
+                              "lValueRequested": false,
+                              "names": [
+                                null
+                              ],
+                              "type": "address",
+                              "type_conversion": true
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": [
+                                    {
+                                      "typeIdentifier": "t_contract$_CDOLib_$7279",
+                                      "typeString": "library CDOLib"
+                                    }
+                                  ],
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": true,
+                                  "lValueRequested": false,
+                                  "type": "type(address)",
+                                  "value": "address"
+                                },
+                                "id": 7270,
+                                "name": "ElementaryTypeNameExpression",
+                                "src": "1876:7:21"
+                              },
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 17162,
+                                  "type": "library CDOLib",
+                                  "value": "this"
+                                },
+                                "id": 7271,
+                                "name": "Identifier",
+                                "src": "1884:4:21"
+                              }
+                            ],
+                            "id": 7272,
+                            "name": "FunctionCall",
+                            "src": "1876:13:21"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 7234,
+                              "type": "uint256",
+                              "value": "minting"
+                            },
+                            "id": 7273,
+                            "name": "Identifier",
+                            "src": "1891:7:21"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 7232,
+                              "type": "uint256",
+                              "value": "trancheLevel"
+                            },
+                            "id": 7274,
+                            "name": "Identifier",
+                            "src": "1900:12:21"
+                          }
+                        ],
+                        "id": 7275,
+                        "name": "FunctionCall",
+                        "src": "1857:56:21"
+                      }
+                    ],
+                    "id": 7276,
+                    "name": "ExpressionStatement",
+                    "src": "1857:56:21"
+                  }
+                ],
+                "id": 7277,
+                "name": "Block",
+                "src": "1640:281:21"
+              }
+            ],
+            "id": 7278,
+            "name": "FunctionDefinition",
+            "src": "1481:440:21"
+          }
+        ],
+        "id": 7279,
+        "name": "ContractDefinition",
+        "src": "1140:786:21"
+      }
+    ],
+    "id": 7280,
+    "name": "SourceUnit",
+    "src": "0:1928:21"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.18+commit.9cf6e910.Emscripten.clang"
+  },
+  "networks": {
+    "70": {
+      "events": {},
+      "links": {},
+      "address": "0xfb902df94cc8fbd8d8a77c75d8307c2b08cfb4d7"
+    }
+  },
+  "schemaVersion": "1.0.1",
+  "updatedAt": "2018-11-27T07:48:41.619Z"
+}

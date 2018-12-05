@@ -1,0 +1,531 @@
+{
+  "contractName": "CloneFactory",
+  "abi": [],
+  "bytecode": "0x60606040523415600e57600080fd5b603580601b6000396000f3006060604052600080fd00a165627a7a72305820967814150821b363f7c1e158f902771ed4fa002d2d84438dfc79caf0ee554d260029",
+  "deployedBytecode": "0x6060604052600080fd00a165627a7a72305820967814150821b363f7c1e158f902771ed4fa002d2d84438dfc79caf0ee554d260029",
+  "sourceMap": "1192:1094:41:-;;;;;;;;;;;;;;;;;",
+  "deployedSourceMap": "1192:1094:41:-;;;;;",
+  "source": "pragma solidity ^0.4.18;\n\n/*\nThe MIT License (MIT)\n\nCopyright (c) 2018 Murray Software, LLC.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n\"Software\"), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be included\nin all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS\nOR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n*/\n//solhint-disable max-line-length\n//solhint-disable no-inline-assembly\n\ncontract CloneFactory {\n\n  function createClone(address target) internal returns (address result) {\n    bytes20 targetBytes = bytes20(target);\n    assembly {\n      let clone := mload(0x40)\n      mstore(clone, 0x3d602d80600a3d3981f3363d3d373d3d3d363d73000000000000000000000000)\n      mstore(add(clone, 0x14), targetBytes)\n      mstore(add(clone, 0x28), 0x5af43d82803e903d91602b57fd5bf30000000000000000000000000000000000)\n      result := create(0, clone, 0x37)\n    }\n  }\n\n  function isClone(address target, address query) internal view returns (bool result) {\n    bytes20 targetBytes = bytes20(target);\n    assembly {\n      let clone := mload(0x40)\n      mstore(clone, 0x363d3d373d3d3d363d7300000000000000000000000000000000000000000000)\n      mstore(add(clone, 0xa), targetBytes)\n      mstore(add(clone, 0x1e), 0x5af43d82803e903d91602b57fd5bf30000000000000000000000000000000000)\n\n      let other := add(clone, 0x40)\n      extcodecopy(query, other, 0, 0x2d)\n      result := and(\n        eq(mload(clone), mload(other)),\n        eq(mload(add(clone, 0xd)), mload(add(other, 0xd)))\n      )\n    }\n  }\n}\n",
+  "sourcePath": "@optionality.io/clone-factory/contracts/CloneFactory.sol",
+  "ast": {
+    "attributes": {
+      "absolutePath": "@optionality.io/clone-factory/contracts/CloneFactory.sol",
+      "exportedSymbols": {
+        "CloneFactory": [
+          15180
+        ]
+      }
+    },
+    "children": [
+      {
+        "attributes": {
+          "literals": [
+            "solidity",
+            "^",
+            "0.4",
+            ".18"
+          ]
+        },
+        "id": 15147,
+        "name": "PragmaDirective",
+        "src": "0:24:41"
+      },
+      {
+        "attributes": {
+          "baseContracts": [
+            null
+          ],
+          "contractDependencies": [
+            null
+          ],
+          "contractKind": "contract",
+          "documentation": null,
+          "fullyImplemented": true,
+          "linearizedBaseContracts": [
+            15180
+          ],
+          "name": "CloneFactory",
+          "scope": 15181
+        },
+        "children": [
+          {
+            "attributes": {
+              "constant": false,
+              "implemented": true,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "createClone",
+              "payable": false,
+              "scope": 15180,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "internal"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "target",
+                      "scope": 15162,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 15148,
+                        "name": "ElementaryTypeName",
+                        "src": "1240:7:41"
+                      }
+                    ],
+                    "id": 15149,
+                    "name": "VariableDeclaration",
+                    "src": "1240:14:41"
+                  }
+                ],
+                "id": 15150,
+                "name": "ParameterList",
+                "src": "1239:16:41"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "result",
+                      "scope": 15162,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 15151,
+                        "name": "ElementaryTypeName",
+                        "src": "1274:7:41"
+                      }
+                    ],
+                    "id": 15152,
+                    "name": "VariableDeclaration",
+                    "src": "1274:14:41"
+                  }
+                ],
+                "id": 15153,
+                "name": "ParameterList",
+                "src": "1273:16:41"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "assignments": [
+                        15155
+                      ]
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "constant": false,
+                          "name": "targetBytes",
+                          "scope": 15162,
+                          "stateVariable": false,
+                          "storageLocation": "default",
+                          "type": "bytes20",
+                          "value": null,
+                          "visibility": "internal"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "name": "bytes20",
+                              "type": "bytes20"
+                            },
+                            "id": 15154,
+                            "name": "ElementaryTypeName",
+                            "src": "1296:7:41"
+                          }
+                        ],
+                        "id": 15155,
+                        "name": "VariableDeclaration",
+                        "src": "1296:19:41"
+                      },
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "bytes20",
+                          "type_conversion": true
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                }
+                              ],
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": true,
+                              "lValueRequested": false,
+                              "type": "type(bytes20)",
+                              "value": "bytes20"
+                            },
+                            "id": 15156,
+                            "name": "ElementaryTypeNameExpression",
+                            "src": "1318:7:41"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 15149,
+                              "type": "address",
+                              "value": "target"
+                            },
+                            "id": 15157,
+                            "name": "Identifier",
+                            "src": "1326:6:41"
+                          }
+                        ],
+                        "id": 15158,
+                        "name": "FunctionCall",
+                        "src": "1318:15:41"
+                      }
+                    ],
+                    "id": 15159,
+                    "name": "VariableDeclarationStatement",
+                    "src": "1296:37:41"
+                  },
+                  {
+                    "attributes": {
+                      "externalReferences": [
+                        {
+                          "result": {
+                            "declaration": 15152,
+                            "isOffset": false,
+                            "isSlot": false,
+                            "src": "1618:6:41",
+                            "valueSize": 1
+                          }
+                        },
+                        {
+                          "targetBytes": {
+                            "declaration": 15155,
+                            "isOffset": false,
+                            "isSlot": false,
+                            "src": "1500:11:41",
+                            "valueSize": 1
+                          }
+                        }
+                      ],
+                      "operations": "{\n    let clone := mload(0x40)\n    mstore(clone, 0x3d602d80600a3d3981f3363d3d373d3d3d363d73000000000000000000000000)\n    mstore(add(clone, 0x14), targetBytes)\n    mstore(add(clone, 0x28), 0x5af43d82803e903d91602b57fd5bf30000000000000000000000000000000000)\n    result := create(0, clone, 0x37)\n}"
+                    },
+                    "children": [],
+                    "id": 15160,
+                    "name": "InlineAssembly",
+                    "src": "1339:321:41"
+                  }
+                ],
+                "id": 15161,
+                "name": "Block",
+                "src": "1290:370:41"
+              }
+            ],
+            "id": 15162,
+            "name": "FunctionDefinition",
+            "src": "1219:441:41"
+          },
+          {
+            "attributes": {
+              "constant": true,
+              "implemented": true,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "isClone",
+              "payable": false,
+              "scope": 15180,
+              "stateMutability": "view",
+              "superFunction": null,
+              "visibility": "internal"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "target",
+                      "scope": 15179,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 15163,
+                        "name": "ElementaryTypeName",
+                        "src": "1681:7:41"
+                      }
+                    ],
+                    "id": 15164,
+                    "name": "VariableDeclaration",
+                    "src": "1681:14:41"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "query",
+                      "scope": 15179,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 15165,
+                        "name": "ElementaryTypeName",
+                        "src": "1697:7:41"
+                      }
+                    ],
+                    "id": 15166,
+                    "name": "VariableDeclaration",
+                    "src": "1697:13:41"
+                  }
+                ],
+                "id": 15167,
+                "name": "ParameterList",
+                "src": "1680:31:41"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "result",
+                      "scope": 15179,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "bool",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "bool",
+                          "type": "bool"
+                        },
+                        "id": 15168,
+                        "name": "ElementaryTypeName",
+                        "src": "1735:4:41"
+                      }
+                    ],
+                    "id": 15169,
+                    "name": "VariableDeclaration",
+                    "src": "1735:11:41"
+                  }
+                ],
+                "id": 15170,
+                "name": "ParameterList",
+                "src": "1734:13:41"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "assignments": [
+                        15172
+                      ]
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "constant": false,
+                          "name": "targetBytes",
+                          "scope": 15179,
+                          "stateVariable": false,
+                          "storageLocation": "default",
+                          "type": "bytes20",
+                          "value": null,
+                          "visibility": "internal"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "name": "bytes20",
+                              "type": "bytes20"
+                            },
+                            "id": 15171,
+                            "name": "ElementaryTypeName",
+                            "src": "1754:7:41"
+                          }
+                        ],
+                        "id": 15172,
+                        "name": "VariableDeclaration",
+                        "src": "1754:19:41"
+                      },
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "bytes20",
+                          "type_conversion": true
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                }
+                              ],
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": true,
+                              "lValueRequested": false,
+                              "type": "type(bytes20)",
+                              "value": "bytes20"
+                            },
+                            "id": 15173,
+                            "name": "ElementaryTypeNameExpression",
+                            "src": "1776:7:41"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 15164,
+                              "type": "address",
+                              "value": "target"
+                            },
+                            "id": 15174,
+                            "name": "Identifier",
+                            "src": "1784:6:41"
+                          }
+                        ],
+                        "id": 15175,
+                        "name": "FunctionCall",
+                        "src": "1776:15:41"
+                      }
+                    ],
+                    "id": 15176,
+                    "name": "VariableDeclarationStatement",
+                    "src": "1754:37:41"
+                  },
+                  {
+                    "attributes": {
+                      "externalReferences": [
+                        {
+                          "result": {
+                            "declaration": 15169,
+                            "isOffset": false,
+                            "isSlot": false,
+                            "src": "2153:6:41",
+                            "valueSize": 1
+                          }
+                        },
+                        {
+                          "query": {
+                            "declaration": 15166,
+                            "isOffset": false,
+                            "isSlot": false,
+                            "src": "2124:5:41",
+                            "valueSize": 1
+                          }
+                        },
+                        {
+                          "targetBytes": {
+                            "declaration": 15172,
+                            "isOffset": false,
+                            "isSlot": false,
+                            "src": "1957:11:41",
+                            "valueSize": 1
+                          }
+                        }
+                      ],
+                      "operations": "{\n    let clone := mload(0x40)\n    mstore(clone, 0x363d3d373d3d3d363d7300000000000000000000000000000000000000000000)\n    mstore(add(clone, 0xa), targetBytes)\n    mstore(add(clone, 0x1e), 0x5af43d82803e903d91602b57fd5bf30000000000000000000000000000000000)\n    let other := add(clone, 0x40)\n    extcodecopy(query, other, 0, 0x2d)\n    result := and(eq(mload(clone), mload(other)), eq(mload(add(clone, 0xd)), mload(add(other, 0xd))))\n}"
+                    },
+                    "children": [],
+                    "id": 15177,
+                    "name": "InlineAssembly",
+                    "src": "1797:487:41"
+                  }
+                ],
+                "id": 15178,
+                "name": "Block",
+                "src": "1748:536:41"
+              }
+            ],
+            "id": 15179,
+            "name": "FunctionDefinition",
+            "src": "1664:620:41"
+          }
+        ],
+        "id": 15180,
+        "name": "ContractDefinition",
+        "src": "1192:1094:41"
+      }
+    ],
+    "id": 15181,
+    "name": "SourceUnit",
+    "src": "0:2287:41"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.18+commit.9cf6e910.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "1.0.1",
+  "updatedAt": "2018-11-27T07:44:24.933Z"
+}
